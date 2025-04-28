@@ -1,0 +1,116 @@
+﻿<Page x:Class="RestFlowSystem.PagesAP.PageAP_Orders"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:RestFlowSystem.PagesAP"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="PageAP_Orders"
+      IsVisibleChanged="Page_IsVisibleChanged">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/Style_AddEdit.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="NoDataMessageStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="Foreground" Value="Gray"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+            <CollectionViewSource x:Key="OrderViewSource" Source="{Binding Orders}"/>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Панель фильтров и кнопок -->
+        <Grid Grid.Row="0" Margin="10,10,10,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Поиск и фильтры слева -->
+            <WrapPanel Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Margin="0,0,10,0">
+                    <TextBlock Text="Поиск:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <TextBox x:Name="SearchOrder" Width="135" FontSize="14" 
+                             TextChanged="SearchOrder_TextChanged" 
+                             HorizontalAlignment="Left"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,10,0">
+                    <TextBlock Text="Статус:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <ComboBox x:Name="FilterStatus" Width="150" FontSize="14" 
+                              SelectionChanged="FilterStatus_SelectionChanged" 
+                              HorizontalAlignment="Left">
+                        <ComboBoxItem Content="Все"/>
+                        <!-- Статусы добавляются динамически в коде -->
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,10,0">
+                    <TextBlock Text="Тип оплаты:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <ComboBox x:Name="FilterPaymentMethod" Width="150" FontSize="14" 
+                              SelectionChanged="FilterPaymentMethod_SelectionChanged" 
+                              HorizontalAlignment="Left">
+                        <ComboBoxItem Content="Все"/>
+                        <!-- Типы оплаты добавляются динамически в коде -->
+                    </ComboBox>
+                </StackPanel>
+                <Button x:Name="ClearFilter" Content="Очистить фильтр" FontSize="10" 
+                        Click="ClearFilter_Click" Style="{StaticResource ClearButton}"/>
+            </WrapPanel>
+
+            <!-- Кнопки справа -->
+            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Button Content="+ Добавить заказ" Style="{StaticResource AddButtonStyle}" 
+                        Click="AddOrder_Click" Width="180" Height="44" Margin="0,0,10,0"/>
+                <Button Content="Удалить заказ" Style="{StaticResource DeleteButtonStyle}" 
+                        Click="DeleteOrder_Click" Width="153"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Таблица заказов -->
+        <Grid Grid.Row="1" Margin="10,0,10,10">
+            <DataGrid x:Name="DGridOrders" 
+                      ItemsSource="{Binding Source={StaticResource OrderViewSource}}"
+                      Style="{StaticResource CustomDataGridStyle}"
+                      RowStyle="{StaticResource CustomDataGridRowStyle}"
+                      ColumnHeaderStyle="{StaticResource CustomDataGridColumnHeaderStyle}"
+                      CellStyle="{StaticResource CustomDataGridCellStyle}"
+                      IsReadOnly="True"
+                      HeadersVisibility="Column"
+                      EnableRowVirtualization="False"
+                      EnableColumnVirtualization="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Номер заказа" Binding="{Binding OrderID}" Width="*"/>
+                    <DataGridTextColumn Header="Стол" Binding="{Binding TableNum}" Width="*"/>
+                    <DataGridTextColumn Header="Официант" Binding="{Binding WaiterName}" Width="*"/>
+                    <DataGridTextColumn Header="Дата" Binding="{Binding OrderDate, StringFormat=dd.MM.yyyy HH:mm}" Width="*"/>
+                    <DataGridTextColumn Header="Статус" Binding="{Binding StatusName}" Width="*"/>
+                    <DataGridTextColumn Header="Способ оплаты" Binding="{Binding PaymentMethodName}" Width="*"/>
+                    <DataGridTextColumn Header="Общая стоимость" Binding="{Binding TotalAmount, StringFormat={}{0:F2}}" Width="*"/>
+                    <DataGridTemplateColumn Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Редактировать" Style="{StaticResource EditButtonStyle}" 
+                                        Click="EditOrder_Click" Tag="{Binding OrderID}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <TextBlock x:Name="NoDataMessage" Text="Нет данных по вашему запросу" 
+                       Style="{StaticResource NoDataMessageStyle}" 
+                       Visibility="Collapsed"/>
+        </Grid>
+    </Grid>
+</Page>

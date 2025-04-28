@@ -1,0 +1,91 @@
+﻿<Page x:Class="RestFlowSystem.PagesWP.ShowMenu"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:RestFlowSystem.PagesWP"
+      mc:Ignorable="d" 
+      d:DesignHeight="700" d:DesignWidth="800"
+      Title="ShowMenu">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/Style_AddEdit.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid Margin="20">
+        <Viewbox Stretch="Uniform" MaxWidth="1000" MaxHeight="1000" Margin="0,20,0,20">
+            <Border Style="{StaticResource CardBorderStyle}">
+                <Grid Margin="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <!-- Заголовок -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Фото -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Подзаголовок -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Название -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Описание -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Категория -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Цена -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Стоп-лист -->
+                        <RowDefinition Height="*"/>
+                        <!-- Ингредиенты -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Кнопка -->
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Подробная информация о блюде" 
+                               Style="{StaticResource TitleTextStyle}" HorizontalAlignment="Center"/>
+
+                    <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Vertical" HorizontalAlignment="Center" Margin="0,10,0,10">
+                        <Image x:Name="PreviewImage" Width="183" Height="152" Stretch="Uniform" Source="{Binding Image}"/>
+                    </StackPanel>
+
+                    <TextBlock Grid.Row="2" Grid.ColumnSpan="2" Text="Данные блюда" 
+                               Style="{StaticResource SubtitleTextStyle}"/>
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Название" Style="{StaticResource InputTextBlockStyle}"/>
+                    <TextBlock Grid.Row="3" Grid.Column="1" x:Name="NameTextBlock" Style="{StaticResource InputTextBlockStyle}"/>
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Описание" Style="{StaticResource InputTextBlockStyle}"/>
+                    <TextBlock Grid.Row="4" Grid.Column="1" x:Name="DescriptionTextBlock" Style="{StaticResource InputTextBlockStyle}" TextWrapping="Wrap"/>
+
+                    <TextBlock Grid.Row="5" Grid.Column="0" Text="Категория" Style="{StaticResource InputTextBlockStyle}"/>
+                    <TextBlock Grid.Row="5" Grid.Column="1" x:Name="CategoryTextBlock" Style="{StaticResource InputTextBlockStyle}"/>
+
+                    <TextBlock Grid.Row="6" Grid.Column="0" Text="Цена" Style="{StaticResource InputTextBlockStyle}"/>
+                    <TextBlock Grid.Row="6" Grid.Column="1" x:Name="PriceTextBlock" Style="{StaticResource InputTextBlockStyle}"/>
+
+                    <TextBlock Grid.Row="7" Grid.Column="0" Text="Стоп-лист" Style="{StaticResource InputTextBlockStyle}"/>
+                    <CheckBox Grid.Row="7" Grid.Column="1" x:Name="StopListCheckBox" IsEnabled="False" VerticalAlignment="Center"/>
+
+                    <TextBlock Grid.Row="8" Grid.Column="0" Text="Ингредиенты" Style="{StaticResource InputTextBlockStyle}" VerticalAlignment="Top"/>
+                    <DataGrid Grid.Row="8" Grid.Column="1" x:Name="DGridDishIngredients" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Ингредиент" Binding="{Binding Ingredients.Name}" Width="190"/>
+                            <DataGridTextColumn Header="Количество" Binding="{Binding Quantity}" Width="90"/>
+                            <DataGridTextColumn Header="Единица измерения" Binding="{Binding Ingredients.Unit}" Width="120"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Button Grid.Row="9" Grid.ColumnSpan="2" Content="Назад" Style="{StaticResource CancelButtonStyle}" 
+                            Click="Back_Click" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                </Grid>
+            </Border>
+        </Viewbox>
+    </Grid>
+</Page>

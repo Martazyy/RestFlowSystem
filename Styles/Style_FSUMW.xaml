@@ -1,0 +1,139 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Цвета -->
+    <Color x:Key="HeaderBackground">#7384e7</Color>
+    <Color x:Key="CardBackground">#FFFFFF</Color>
+    <Color x:Key="PrimaryText">#7384e7</Color>
+    <Color x:Key="SecondaryText">#7384e7</Color>
+    <Color x:Key="ButtonBackground">#7384e7</Color>
+    <Color x:Key="ButtonForeground">#FFFFFF</Color>
+    <Color x:Key="ErrorTextColor">Red</Color>
+
+    <!-- Кисти -->
+    <SolidColorBrush x:Key="HeaderColor" Color="{StaticResource HeaderBackground}"/>
+    <SolidColorBrush x:Key="CardBackgroundColor" Color="{StaticResource CardBackground}"/>
+    <SolidColorBrush x:Key="PrimaryTextColor" Color="{StaticResource PrimaryText}"/>
+    <SolidColorBrush x:Key="SecondaryTextColor" Color="{StaticResource SecondaryText}"/>
+    <SolidColorBrush x:Key="ButtonBackgroundColor" Color="{StaticResource ButtonBackground}"/>
+    <SolidColorBrush x:Key="ButtonForegroundColor" Color="{StaticResource ButtonForeground}"/>
+    <SolidColorBrush x:Key="BorderColorBrush" Color="#BDC3C7"/>
+    <SolidColorBrush x:Key="ErrorTextBrush" Color="{StaticResource ErrorTextColor}"/>
+
+    <!-- Стили -->
+    <Style x:Key="HeaderGridStyle" TargetType="Grid">
+        <Setter Property="Background" Value="{StaticResource HeaderColor}"/>
+    </Style>
+
+    <Style x:Key="HeaderTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Width" Value="370"/>
+        <Setter Property="Margin" Value="5"/>
+    </Style>
+
+    <Style x:Key="CardBorderStyle" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource CardBackgroundColor}"/>
+        <Setter Property="CornerRadius" Value="20"/>
+        <Setter Property="Padding" Value="30"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderColorBrush}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Height" Value="652"/>
+        <Setter Property="Width" Value="561"/>
+    </Style>
+
+    <Style x:Key="MainGridStyle" TargetType="Grid">
+        <Setter Property="MinWidth" Value="400"/>
+        <Setter Property="MinHeight" Value="400"/>
+        <Setter Property="Height" Value="600"/>
+    </Style>
+
+    <Style x:Key="TitleTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Foreground" Value="{StaticResource PrimaryTextColor}"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0,0,0,10"/>
+    </Style>
+
+    <Style x:Key="SubtitleTextStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{StaticResource SecondaryTextColor}"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0,0,0,20"/>
+    </Style>
+
+    <Style x:Key="InputTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Height" Value="16"/>
+    </Style>
+
+    <Style x:Key="ErrorTextStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource ErrorTextBrush}"/>
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="Margin" Value="5,0,5,5"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
+    <Style x:Key="InputBoxStyle" TargetType="TextBox">
+        <Setter Property="Margin" Value="5,5,5,0"/>
+        <Setter Property="Padding" Value="6"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderColorBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+
+    <Style x:Key="InputPasswordBoxStyle" TargetType="PasswordBox">
+        <Setter Property="Margin" Value="5,5,5,0"/>
+        <Setter Property="Padding" Value="6"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderColorBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+
+    <Style x:Key="InputDatePickerStyle" TargetType="DatePicker">
+        <Setter Property="Margin" Value="5,5,5,0"/>
+        <Setter Property="Height" Value="28"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderColorBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+
+    <Style x:Key="ShowPasswordCheckBoxStyle" TargetType="CheckBox">
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="Margin" Value="0,19,273,0"/>
+        <Setter Property="Width" Value="116"/>
+        <Setter Property="Height" Value="17"/>
+    </Style>
+
+    <Style x:Key="RoundedButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource ButtonBackgroundColor}"/>
+        <Setter Property="Foreground" Value="{StaticResource ButtonForegroundColor}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Padding" Value="10,5"/>
+        <Setter Property="Margin" Value="55,39,0,-66"/>
+        <Setter Property="Width" Value="181"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="BorderBrush" Value="{StaticResource ButtonBackgroundColor}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="5">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

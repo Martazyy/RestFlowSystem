@@ -1,0 +1,127 @@
+﻿<Page x:Class="RestFlowSystem.PagesAP.PageAP_Users"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:RestFlowSystem.PagesAP"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="PageAP_Users"
+      IsVisibleChanged="Page_IsVisibleChanged">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/Style_AddEdit.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="NoDataMessageStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="Foreground" Value="Gray"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+            <CollectionViewSource x:Key="UserViewSource" Source="{Binding Users}"/>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Панель фильтров и кнопок -->
+        <Grid Grid.Row="0" Margin="10,10,10,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Поиск и фильтры слева -->
+            <WrapPanel Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Margin="0,0,10,0">
+                    <TextBlock Text="Поиск:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <TextBox x:Name="SearchUser" Width="135" FontSize="14" 
+                             TextChanged="SearchUser_TextChanged" 
+                             HorizontalAlignment="Left"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,10,0">
+                    <TextBlock Text="Роль:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <ComboBox x:Name="FilterRole" Width="150" FontSize="14" 
+                              SelectionChanged="FilterRole_SelectionChanged" 
+                              HorizontalAlignment="Left">
+                        <ComboBoxItem Content="Все"/>
+                        <!-- Роли добавляются динамически в коде -->
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,10,0">
+                    <TextBlock Text="Доступ:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <ComboBox x:Name="FilterAccess" Width="150" FontSize="14" 
+                              SelectionChanged="FilterAccess_SelectionChanged" 
+                              HorizontalAlignment="Left">
+                        <ComboBoxItem Content="Все"/>
+                        <ComboBoxItem Content="Есть"/>
+                        <ComboBoxItem Content="Нет"/>
+                    </ComboBox>
+                </StackPanel>
+                <Button x:Name="ClearFilter" Content="Очистить фильтр" FontSize="10" 
+                        Click="ClearFilter_Click" Style="{StaticResource ClearButton}"/>
+            </WrapPanel>
+
+            <!-- Кнопки справа -->
+            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Button Content="+ Добавить пользователя" Style="{StaticResource AddButtonStyle}" 
+                        Click="AddUser_Click" Width="180" Height="44" Margin="0,0,10,0"/>
+                <Button Content="Удалить пользователя" Style="{StaticResource DeleteButtonStyle}" 
+                        Click="DeleteUser_Click" Width="153"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Таблица пользователей -->
+        <Grid Grid.Row="1" Margin="10,0,10,10">
+            <DataGrid x:Name="DGridUsers" 
+                      ItemsSource="{Binding Source={StaticResource UserViewSource}}"
+                      Style="{StaticResource CustomDataGridStyle}"
+                      RowStyle="{StaticResource CustomDataGridRowStyle}"
+                      ColumnHeaderStyle="{StaticResource CustomDataGridColumnHeaderStyle}"
+                      CellStyle="{StaticResource CustomDataGridCellStyle}"
+                      IsReadOnly="True"
+                      HeadersVisibility="Column"
+                      EnableRowVirtualization="False"
+                      EnableColumnVirtualization="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Фамилия" Binding="{Binding Employees.LastName}" Width="*"/>
+                    <DataGridTextColumn Header="Имя" Binding="{Binding Employees.FirstName}" Width="*"/>
+                    <DataGridTextColumn Header="Отчество" Binding="{Binding Employees.MiddleName}" Width="*"/>
+                    <DataGridTextColumn Header="Логин" Binding="{Binding Username}" Width="*"/>
+                    <DataGridTextColumn Header="Пароль" Binding="{Binding PasswordHash}" Width="1.3*"/>
+                    <DataGridTextColumn Header="Должность" Binding="{Binding Employees.Positions.PositionName}" Width="*"/>
+                    <DataGridTextColumn Header="Роль" Binding="{Binding Roles.RoleName}" Width="*"/>
+                    <DataGridTemplateColumn Header="Доступ в систему" Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox x:Name="YesCheckBox" Content="Да" IsChecked="{Binding IsActive, Mode=OneWay}" IsEnabled="False" Margin="5,0"/>
+                                    <CheckBox x:Name="NoCheckBox" Content="Нет" IsEnabled="False" Margin="5,0" Loaded="NoCheckBox_Loaded"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Редактировать" Style="{StaticResource EditButtonStyle}" 
+                                        Click="EditUser_Click" Tag="{Binding UserID}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <TextBlock x:Name="NoDataMessage" Text="Нет данных по вашему запросу" 
+                       Style="{StaticResource NoDataMessageStyle}" 
+                       Visibility="Collapsed"/>
+        </Grid>
+    </Grid>
+</Page>

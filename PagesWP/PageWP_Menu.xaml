@@ -1,0 +1,134 @@
+﻿<Page x:Class="RestFlowSystem.PagesWP.PageWP_Menu"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:RestFlowSystem.PagesWP"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="PageWP_Menu"
+      IsVisibleChanged="Page_IsVisibleChanged">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/Style_AddEdit.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="ImageToolTipStyle" TargetType="ToolTip">
+                <Setter Property="Placement" Value="Mouse"/>
+                <Setter Property="HasDropShadow" Value="True"/>
+                <Setter Property="StaysOpen" Value="True"/>
+                <Setter Property="IsOpen" Value="False"/>
+            </Style>
+            <Style x:Key="NoDataMessageStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="Foreground" Value="Gray"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+            <CollectionViewSource x:Key="MenuViewSource" Source="{Binding Menu}"/>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Панель фильтров -->
+        <Grid Grid.Row="0" Margin="10,10,10,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Поиск и фильтры слева -->
+            <WrapPanel Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Margin="0,0,10,0">
+                    <TextBlock Text="Поиск:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <TextBox x:Name="SearchMenu" Width="135" FontSize="14" 
+                             TextChanged="SearchMenu_TextChanged" 
+                             HorizontalAlignment="Left"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,10,0">
+                    <TextBlock Text="Категория:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <ComboBox x:Name="FilterCategory" Width="150" FontSize="14" 
+                              SelectionChanged="FilterCategory_SelectionChanged" 
+                              HorizontalAlignment="Left">
+                        <ComboBoxItem Content="Все"/>
+                        <!-- Категории добавляются динамически в коде -->
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,10,0">
+                    <TextBlock Text="Стоп-лист:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <ComboBox x:Name="FilterStopList" Width="150" FontSize="14" 
+                              SelectionChanged="FilterStopList_SelectionChanged" 
+                              HorizontalAlignment="Left">
+                        <ComboBoxItem Content="Все"/>
+                        <ComboBoxItem Content="В стоп-листе"/>
+                        <ComboBoxItem Content="Не в стоп-листе"/>
+                    </ComboBox>
+                </StackPanel>
+                <Button x:Name="ClearFilter" Content="Очистить фильтр" FontSize="10" 
+                        Click="ClearFilter_Click" Style="{StaticResource ClearButton}"/>
+            </WrapPanel>
+        </Grid>
+
+        <!-- Таблица меню -->
+        <Grid Grid.Row="1" Margin="10,0,10,10">
+            <DataGrid x:Name="DGridMenu" 
+                      ItemsSource="{Binding Source={StaticResource MenuViewSource}}"
+                      Style="{StaticResource CustomDataGridStyle}"
+                      RowStyle="{StaticResource CustomDataGridRowStyle}"
+                      ColumnHeaderStyle="{StaticResource CustomDataGridColumnHeaderStyle}"
+                      CellStyle="{StaticResource CustomDataGridCellStyle}"
+                      IsReadOnly="True"
+                      HeadersVisibility="Column"
+                      EnableRowVirtualization="False"
+                      EnableColumnVirtualization="False">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Фото" Width="50">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding Image}" MaxHeight="150" MaxWidth="50" Stretch="Uniform" 
+                                       MouseLeftButtonDown="Image_MouseLeftButtonDown"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="*"/>
+                    <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="*"/>
+                    <DataGridTextColumn Header="Категория" Binding="{Binding MenuCategories.CategoryName}" Width="*"/>
+                    <DataGridTextColumn Header="Цена" Binding="{Binding Price, StringFormat={}{0:F2}}" Width="0.5*"/>
+                    <DataGridTemplateColumn Header="Стоп-лист" Width="0.4*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding StopList, Mode=OneWay}" IsEnabled="False" HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Подробнее" Style="{StaticResource EditButtonStyle}" 
+                                        Click="ShowDetails_Click" Tag="{Binding MenuID}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <TextBlock x:Name="NoDataMessage" Text="Нет данных по вашему запросу" 
+                       Style="{StaticResource NoDataMessageStyle}" 
+                       Visibility="Collapsed"/>
+        </Grid>
+
+        <!-- Popup для увеличенного изображения -->
+        <Popup x:Name="ImagePopup" StaysOpen="False" Placement="Center" AllowsTransparency="True">
+            <Border Background="#80000000" MouseDown="Border_MouseDown">
+                <Image x:Name="PopupImage" MaxHeight="500" MaxWidth="500" Stretch="Uniform" Margin="20"/>
+            </Border>
+        </Popup>
+    </Grid>
+</Page>

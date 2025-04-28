@@ -1,0 +1,59 @@
+﻿<Window x:Class="RestFlowSystem.WaiterPanel"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RestFlowSystem"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Официант" Height="800" Width="1400"
+        Closing="Window_Closing">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource HeaderBorderStyle}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" MinWidth="150"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Viewbox Grid.Column="0" Stretch="Uniform" HorizontalAlignment="Left" Margin="15,0,0,0">
+                    <TextBlock Text="RestFlow" Style="{StaticResource HeaderTextStyle}"/>
+                </Viewbox>
+                <TextBlock x:Name="Labl" Grid.Column="1" Style="{StaticResource UserInfoTextStyle}"/>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource SidebarBorderStyle}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="60"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Style="{StaticResource SidebarStackPanelStyle}">
+                    <Button Content="Меню" Style="{StaticResource SidebarTextButtonStyle}" Click="Menu_Click"/>
+                    <Button Content="Заказы" Style="{StaticResource SidebarTextButtonStyle}" Click="Orders_Click"/>
+                </StackPanel>
+
+                <Button Content="Смена аккаунта" Click="Logout_Click"
+                        Style="{StaticResource LogoutButtonStyle}" Grid.Row="1"/>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource MainContentBorderStyle}">
+            <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"
+                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        </Border>
+    </Grid>
+</Window>
