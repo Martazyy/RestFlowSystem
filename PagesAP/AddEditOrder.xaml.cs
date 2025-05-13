@@ -82,14 +82,12 @@ namespace RestFlowSystem.PagesAP
         {
             try
             {
-                // Находим все блюда, которые используют эти ингредиенты
                 var affectedDishes = db.DishIngredients
                     .Where(di => ingredientIds.Contains(di.IngredientID))
                     .Select(di => di.MenuID)
                     .Distinct()
                     .ToList();
 
-                // Список для сообщений о стоп-листе
                 List<string> stopListMessages = new List<string>();
 
                 foreach (var menuId in affectedDishes)
@@ -97,7 +95,6 @@ namespace RestFlowSystem.PagesAP
                     var dish = db.Menu.FirstOrDefault(m => m.MenuID == menuId);
                     if (dish == null) continue;
 
-                    // Проверяем все ингредиенты для этого блюда
                     var dishIngredients = db.DishIngredients
                         .Include(di => di.Ingredients)
                         .Where(di => di.MenuID == menuId)
@@ -115,7 +112,6 @@ namespace RestFlowSystem.PagesAP
                         }
                     }
 
-                    // Обновляем StopList
                     if (!hasEnoughIngredients)
                     {
                         if (!dish.StopList)
@@ -138,7 +134,6 @@ namespace RestFlowSystem.PagesAP
 
                 db.SaveChanges();
 
-                // Показываем сообщения о стоп-листе
                 if (stopListMessages.Any())
                 {
                     MessageBox.Show(string.Join("\n\n", stopListMessages), "Обновление стоп-листа", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -201,7 +196,6 @@ namespace RestFlowSystem.PagesAP
                 _tempOrderItems.Add(newOrderItem);
             }
 
-            // Списываем ингредиенты со склада
             var affectedIngredientIds = new List<int>();
             foreach (var dishIngredient in dishIngredients)
             {
@@ -211,7 +205,6 @@ namespace RestFlowSystem.PagesAP
             }
             db.SaveChanges();
 
-            // Обновляем StopList для всех блюд, использующих изменённые ингредиенты
             UpdateMenuStopListForIngredients(affectedIngredientIds);
 
             LoadOrderItems();
@@ -220,7 +213,6 @@ namespace RestFlowSystem.PagesAP
             NewQuantityTextBox.Text = "1";
             QuantityError.Visibility = Visibility.Collapsed;
 
-            // Обновляем список доступных блюд в NewMenuComboBox
             NewMenuComboBox.ItemsSource = db.Menu.Where(m => !m.StopList).ToList();
         }
 
@@ -236,7 +228,6 @@ namespace RestFlowSystem.PagesAP
                     .Include(di => di.Ingredients)
                     .ToList();
 
-                // Возвращаем ингредиенты на склад
                 var affectedIngredientIds = new List<int>();
                 foreach (var dishIngredient in dishIngredients)
                 {
@@ -264,26 +255,22 @@ namespace RestFlowSystem.PagesAP
 
                 db.SaveChanges();
 
-                // Обновляем StopList для всех блюд, использующих изменённые ингредиенты
                 UpdateMenuStopListForIngredients(affectedIngredientIds);
             }
 
             LoadOrderItems();
             UpdateTotalAmount();
 
-            // Обновляем список доступных блюд в NewMenuComboBox
             NewMenuComboBox.ItemsSource = db.Menu.Where(m => !m.StopList).ToList();
         }
 
         private void TableNumTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            // Разрешаем ввод только цифр
             e.Handled = !Regex.IsMatch(e.Text, @"^[0-9]+$");
         }
 
         private void TableNumTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            // Автоматическая валидация при изменении текста
             if (int.TryParse(TableNumTextBox.Text, out int value))
             {
                 if (value < 1)
@@ -327,7 +314,6 @@ namespace RestFlowSystem.PagesAP
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            // Валидация номера стола
             if (!int.TryParse(TableNumTextBox.Text, out int tableNum) || tableNum < 1 || tableNum > 100)
             {
                 TableNumError.Visibility = Visibility.Visible;

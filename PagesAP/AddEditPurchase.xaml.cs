@@ -78,7 +78,6 @@ namespace RestFlowSystem.PagesAP
                 var comboBox = sender as ComboBox;
                 var supplierName = comboBox.Text.Trim();
 
-                // Проверяем, существует ли уже поставщик с таким именем
                 var existingSupplier = db.Suppliers.FirstOrDefault(s => s.SupplierName == supplierName);
                 if (existingSupplier != null)
                 {
@@ -86,7 +85,6 @@ namespace RestFlowSystem.PagesAP
                     return;
                 }
 
-                // Если поставщик не существует, добавляем нового
                 if (string.IsNullOrWhiteSpace(supplierName))
                 {
                     MessageBox.Show("Введите название поставщика!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -102,7 +100,6 @@ namespace RestFlowSystem.PagesAP
                     db.Suppliers.Add(newSupplier);
                     db.SaveChanges();
 
-                    // Обновляем список поставщиков
                     LoadComboBoxes();
                     SupplierComboBox.SelectedItem = newSupplier;
                 }
@@ -118,7 +115,6 @@ namespace RestFlowSystem.PagesAP
             var ingredientName = NewIngredientComboBox.Text.Trim();
             var unit = UnitComboBox.Text.Trim();
 
-            // Проверяем, существует ли уже ингредиент с таким именем
             var existingIngredient = db.Ingredients.FirstOrDefault(i => i.Name == ingredientName);
             if (existingIngredient != null)
             {
@@ -127,7 +123,6 @@ namespace RestFlowSystem.PagesAP
                 return;
             }
 
-            // Если ингредиент не существует, добавляем новый
             if (string.IsNullOrWhiteSpace(ingredientName))
             {
                 MessageBox.Show("Введите название ингредиента!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -144,7 +139,6 @@ namespace RestFlowSystem.PagesAP
                 db.Ingredients.Add(newIngredient);
                 db.SaveChanges();
 
-                // Обновляем список ингредиентов
                 LoadComboBoxes();
                 NewIngredientComboBox.SelectedItem = newIngredient;
                 UnitComboBox.Text = newIngredient.Unit ?? string.Empty;
@@ -218,7 +212,6 @@ namespace RestFlowSystem.PagesAP
 
             _tempPurchaseDetails.Add(newPurchaseDetail);
 
-            // Обновляем склад
             var inventory = db.Inventory.FirstOrDefault(i => i.IngredientID == selectedIngredient.IngredientID);
             if (inventory == null)
             {
@@ -240,8 +233,8 @@ namespace RestFlowSystem.PagesAP
             LoadPurchaseDetails();
             UpdateTotalAmount();
             NewIngredientComboBox.SelectedIndex = -1;
-            UnitComboBox.SelectedIndex = -1; // Сбрасываем выбор
-            UnitComboBox.Text = string.Empty; // Очищаем текстовое поле
+            UnitComboBox.SelectedIndex = -1; 
+            UnitComboBox.Text = string.Empty; 
             NewQuantityTextBox.Text = "1";
             NewUnitPriceTextBox.Text = "0";
             QuantityError.Visibility = Visibility.Collapsed;
@@ -254,7 +247,6 @@ namespace RestFlowSystem.PagesAP
 
             if (purchaseDetail != null)
             {
-                // Возвращаем количество на склад
                 var inventory = db.Inventory.FirstOrDefault(i => i.IngredientID == purchaseDetail.IngredientID);
                 if (inventory != null)
                 {
@@ -310,7 +302,6 @@ namespace RestFlowSystem.PagesAP
             }
             else
             {
-                // Удаляем старые детали, которые больше не нужны
                 var existingDetails = db.PurchaseDetails.Where(pd => pd.PurchaseID == _purchase.PurchaseID).ToList();
                 foreach (var existingDetail in existingDetails)
                 {

@@ -28,21 +28,13 @@
                 <Grid Margin="20">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <!-- Заголовок -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Подзаголовок -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Поставщик -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Дата закупки -->
                         <RowDefinition Height="*"/>
-                        <!-- Детали закупки -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Ошибка -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Общая стоимость -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Кнопки -->
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>

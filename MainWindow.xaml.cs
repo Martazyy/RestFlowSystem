@@ -31,7 +31,6 @@ namespace RestFlowSystem
             ClearErrors();
 
             string login = LoginTextBox.Text;
-            // Проверяем, откуда брать пароль: из PasswordBox или PasswordTextBox
             string password = PasswordBox.Visibility == Visibility.Visible
                 ? PasswordBox.Password
                 : PasswordTextBox.Text;
@@ -75,7 +74,6 @@ namespace RestFlowSystem
                         return;
                     }
 
-                    // Проверка доступа
                     if (!user.IsActive)
                     {
                         MessageBox.Show("Доступ заблокирован! Обратитесь к администратору системы.",
@@ -86,18 +84,25 @@ namespace RestFlowSystem
                     }
 
                     _isSuccessfulLogin = true;
-                    if (user.RoleID == 1) // Админ
+                    if (user.RoleID == 1) 
                     {
                         AdminPanel adminPanel = new AdminPanel(login);
                         adminPanel.WindowState = this.WindowState;
                         adminPanel.Show();
                         this.Close();
                     }
-                    else if (user.RoleID == 2) // Официант
+                    else if (user.RoleID == 2) 
                     {
                         WaiterPanel waiterPanel = new WaiterPanel(login);
                         waiterPanel.WindowState = this.WindowState;
                         waiterPanel.Show();
+                        this.Close();
+                    }
+                    else if (user.RoleID == 3) 
+                    {
+                        ChefPanel chefPanel = new ChefPanel(login);
+                        chefPanel.WindowState = this.WindowState;
+                        chefPanel.Show();
                         this.Close();
                     }
                 }

@@ -20,32 +20,23 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- HEADER -->
         <Grid Grid.Row="0" Style="{StaticResource HeaderGridStyle}">
             <Viewbox Stretch="Uniform" HorizontalAlignment="Left">
                 <TextBlock Text="RestFlow" Style="{StaticResource HeaderTextStyle}"/>
             </Viewbox>
         </Grid>
 
-        <!-- MAIN CONTENT -->
         <Viewbox Grid.Row="1" Stretch="Uniform" MaxWidth="800" MaxHeight="800" Margin="0,0,0,27">
             <Border Style="{StaticResource CardBorderStyle}" Height="321">
                 <Grid Style="{StaticResource MainGridStyle}" Margin="0,21,0,-301">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <!-- Заголовок -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Подзаголовок -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Логин -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Ошибка логина -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Пароль -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Ошибка пароля -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Кнопка -->
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
@@ -53,22 +44,18 @@
                         <ColumnDefinition Width="293*"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Заголовок и подзаголовок -->
                     <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Добро пожаловать в систему RestFlow" Style="{StaticResource TitleTextStyle}"/>
                     <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="Пожалуйста, введите ваш логин и пароль" Style="{StaticResource SubtitleTextStyle}"/>
 
-                    <!-- Логин -->
                     <TextBlock Grid.Row="2" Text="Логин" Style="{StaticResource InputTextBlockStyle}"/>
                     <TextBox Grid.Row="2" Grid.Column="1" Name="LoginTextBox" Style="{StaticResource InputBoxStyle}"/>
                     <TextBlock Grid.Row="3" Grid.Column="1" Name="LoginErrorText" Style="{StaticResource ErrorTextStyle}"/>
 
-                    <!-- Пароль -->
                     <TextBlock Grid.Row="4" Text="Пароль" Style="{StaticResource InputTextBlockStyle}"/>
                     <PasswordBox Grid.Row="4" Grid.Column="1" Name="PasswordBox" Style="{StaticResource InputPasswordBoxStyle}" Visibility="Visible"/>
                     <TextBox Grid.Row="4" Grid.Column="1" Name="PasswordTextBox" Style="{StaticResource InputBoxStyle}" Visibility="Hidden"/>
                     <TextBlock Grid.Row="5" Grid.Column="1" Name="PasswordErrorText" Style="{StaticResource ErrorTextStyle}"/>
 
-                    <!-- CheckBox и Кнопка -->
                     <CheckBox Grid.Row="6" Name="ShowPasswordCheckBox" Content="Показать пароль" 
                               Style="{StaticResource ShowPasswordCheckBoxStyle}" 
                               Checked="ShowPasswordCheckBox_Checked" 

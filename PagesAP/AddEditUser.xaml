@@ -30,6 +30,9 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
@@ -53,29 +56,34 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
+                    <TextBlock Grid.Row="3" Grid.Column="1" x:Name="EmployeeErrorText" Style="{StaticResource ErrorTextStyle}"/>
 
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Логин" Style="{StaticResource InputTextBlockStyle}"/>
-                    <TextBox Grid.Row="3" Grid.Column="1" x:Name="UsernameTextBox" Style="{StaticResource InputBoxStyle}"
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Логин" Style="{StaticResource InputTextBlockStyle}"/>
+                    <TextBox Grid.Row="4" Grid.Column="1" x:Name="UsernameTextBox" Style="{StaticResource InputBoxStyle}"
                              Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Grid.Row="5" Grid.Column="1" x:Name="UsernameErrorText" Style="{StaticResource ErrorTextStyle}"/>
 
-                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Пароль" Style="{StaticResource InputTextBlockStyle}" Margin="0,5,5,0" VerticalAlignment="Top"/>
-                    <Grid Grid.Row="4" Grid.Column="1">
+                    <TextBlock Grid.Row="6" Grid.Column="0" Text="Пароль" Style="{StaticResource InputTextBlockStyle}" Margin="0,5,5,0" VerticalAlignment="Top"/>
+                    <Grid Grid.Row="6" Grid.Column="1">
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <PasswordBox x:Name="PasswordBox" Grid.Row="0" Style="{StaticResource InputPasswordBoxStyle}" Margin="0,0,0,5"/>
-                        <CheckBox x:Name="ShowPasswordCheckBox" Grid.Row="1" Content="Показать пароль" Checked="ShowPasswordCheckBox_Checked" Unchecked="ShowPasswordCheckBox_Unchecked" Margin="0, 10"/>
+                        <TextBlock Grid.Row="1" x:Name="PasswordErrorText" Style="{StaticResource ErrorTextStyle}"/>
+                        <CheckBox x:Name="ShowPasswordCheckBox" Grid.Row="2" Content="Показать пароль" Checked="ShowPasswordCheckBox_Checked" Unchecked="ShowPasswordCheckBox_Unchecked" Margin="0,10"/>
                     </Grid>
 
-                    <TextBlock Grid.Row="6" Grid.Column="0" Text="Роль" Style="{StaticResource InputTextBlockStyle}"/>
-                    <ComboBox Grid.Row="6" Grid.Column="1" x:Name="RoleComboBox" Style="{StaticResource InputComboBoxStyle}"
+                    <TextBlock Grid.Row="8" Grid.Column="0" Text="Роль" Style="{StaticResource InputTextBlockStyle}"/>
+                    <ComboBox Grid.Row="8" Grid.Column="1" x:Name="RoleComboBox" Style="{StaticResource InputComboBoxStyle}"
                               DisplayMemberPath="RoleName" SelectedValuePath="RoleID" SelectedValue="{Binding RoleID}"/>
+                    <TextBlock Grid.Row="9" Grid.Column="1" x:Name="RoleErrorText" Style="{StaticResource ErrorTextStyle}"/>
 
-                    <TextBlock Grid.Row="7" Grid.Column="0" Text="Доступ в систему" Style="{StaticResource InputTextBlockStyle}"/>
-                    <CheckBox Grid.Row="7" Grid.Column="1" x:Name="IsActiveCheckBox" IsChecked="{Binding IsActive}" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="10" Grid.Column="0" Text="Доступ в систему" Style="{StaticResource InputTextBlockStyle}"/>
+                    <CheckBox Grid.Row="10" Grid.Column="1" x:Name="IsActiveCheckBox" IsChecked="{Binding IsActive}" VerticalAlignment="Center"/>
 
-                    <StackPanel Grid.Row="8" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,85,0">
+                    <StackPanel Grid.Row="11" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,85,0">
                         <Button Content="Сохранить" Style="{StaticResource SaveButtonStyle}" Click="SaveButton_Click"/>
                         <Button Content="Отмена" Style="{StaticResource CancelButtonStyle}" Click="CancelButton_Click"/>
                     </StackPanel>

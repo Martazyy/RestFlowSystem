@@ -10,7 +10,7 @@ namespace RestFlowSystem
 {
     public partial class FirstSignUp : Window
     {
-        private bool _isSuccessfulRegistration = false; 
+        private bool _isSuccessfulRegistration = false;
 
         public FirstSignUp()
         {
@@ -24,11 +24,11 @@ namespace RestFlowSystem
                     var adminUser = db.Users.AsNoTracking().FirstOrDefault(u => u.RoleID == 1);
                     if (adminUser != null)
                     {
-                        _isSuccessfulRegistration = true; 
+                        _isSuccessfulRegistration = true;
                         MainWindow mw = new MainWindow();
                         mw.WindowState = this.WindowState;
                         mw.Show();
-                        this.Close(); 
+                        this.Close();
                     }
                 }
             }
@@ -255,10 +255,14 @@ namespace RestFlowSystem
                     db.SaveChanges();
 
                     _isSuccessfulRegistration = true;
+                    MessageBox.Show("Регистрация прошла успешно",
+                                    "Успех",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Information);
                     MainWindow mw = new MainWindow();
                     mw.WindowState = this.WindowState;
                     mw.Show();
-                    this.Close(); 
+                    this.Close();
                 }
             }
             catch (Exception ex)
@@ -284,7 +288,7 @@ namespace RestFlowSystem
 
             if (result == MessageBoxResult.No)
             {
-                e.Cancel = true; 
+                e.Cancel = true;
             }
         }
 

@@ -99,7 +99,6 @@ namespace RestFlowSystem.PagesWP
                     var menuItem = item as Menu;
                     if (menuItem == null) return false;
 
-                    // Поиск по всем полям
                     string searchText = SearchMenu.Text?.ToLower() ?? "";
                     bool searchMatch = string.IsNullOrWhiteSpace(searchText) ||
                                        (menuItem.Name?.ToLower().Contains(searchText) ?? false) ||
@@ -107,13 +106,11 @@ namespace RestFlowSystem.PagesWP
                                        (menuItem.MenuCategories?.CategoryName?.ToLower().Contains(searchText) ?? false) ||
                                        (menuItem.Price.ToString("F2").Contains(searchText));
 
-                    // Фильтрация по категории
                     var selectedCategory = FilterCategory.SelectedItem as ComboBoxItem;
                     bool categoryMatch = selectedCategory == null ||
                                          selectedCategory.Content.ToString() == "Все" ||
                                          (selectedCategory.Tag != null && menuItem.CategoryID == (int)selectedCategory.Tag);
 
-                    // Фильтрация по стоп-листу
                     var selectedStopList = FilterStopList.SelectedItem as ComboBoxItem;
                     bool stopListMatch = selectedStopList == null ||
                                          selectedStopList.Content.ToString() == "Все" ||

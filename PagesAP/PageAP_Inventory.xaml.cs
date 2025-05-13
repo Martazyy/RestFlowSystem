@@ -74,8 +74,7 @@ namespace RestFlowSystem.PagesAP
                     _inventory.Add(item);
                 }
 
-                // Установка минимальной и максимальной даты для DatePicker
-                // Считаем LastDeliveryDate == DateTime.MinValue как отсутствие даты
+
                 var validDates = _inventory
                     .Where(i => i.LastDeliveryDate != DateTime.MinValue)
                     .Select(i => i.LastDeliveryDate)
@@ -106,7 +105,6 @@ namespace RestFlowSystem.PagesAP
                     var inventoryItem = item as Inventory;
                     if (inventoryItem == null) return false;
 
-                    // Поиск по всем полям
                     string searchText = SearchInventory.Text?.ToLower() ?? "";
                     bool searchMatch = string.IsNullOrWhiteSpace(searchText) ||
                                        (inventoryItem.Ingredients?.Name?.ToLower().Contains(searchText) ?? false) ||
@@ -116,7 +114,6 @@ namespace RestFlowSystem.PagesAP
                                            ? inventoryItem.LastDeliveryDate.ToString("dd.MM.yyyy").Contains(searchText)
                                            : false);
 
-                    // Фильтрация по периоду
                     bool dateMatch = true;
                     bool hasDate = inventoryItem.LastDeliveryDate != DateTime.MinValue;
 
@@ -128,7 +125,7 @@ namespace RestFlowSystem.PagesAP
                         }
                         else
                         {
-                            dateMatch = false; // Если дата не указана, исключаем запись
+                            dateMatch = false; 
                         }
                     }
 
@@ -140,11 +137,10 @@ namespace RestFlowSystem.PagesAP
                         }
                         else
                         {
-                            dateMatch = false; // Если дата не указана, исключаем запись
+                            dateMatch = false; 
                         }
                     }
 
-                    // Если обе даты фильтра не выбраны, показываем записи даже без даты
                     if (!DateFrom.SelectedDate.HasValue && !DateTo.SelectedDate.HasValue)
                     {
                         dateMatch = true;
@@ -192,14 +188,12 @@ namespace RestFlowSystem.PagesAP
             {
                 var context = Entities.GetContext();
 
-                // Находим все блюда, которые используют этот ингредиент
                 var affectedDishes = context.DishIngredients
                     .Where(di => di.IngredientID == ingredientId)
                     .Select(di => di.MenuID)
                     .Distinct()
                     .ToList();
 
-                // Список для сообщений о стоп-листе
                 List<string> stopListMessages = new List<string>();
 
                 foreach (var menuId in affectedDishes)
@@ -207,23 +201,19 @@ namespace RestFlowSystem.PagesAP
                     var dish = context.Menu.FirstOrDefault(m => m.MenuID == menuId);
                     if (dish == null) continue;
 
-                    // Проверяем, достаточно ли ингредиента для этого блюда
                     var dishIngredient = context.DishIngredients
                         .Include(di => di.Ingredients)
                         .FirstOrDefault(di => di.MenuID == menuId && di.IngredientID == ingredientId);
 
                     if (dishIngredient == null) continue;
 
-                    // Проверяем, достаточно ли ингредиента на складе
                     bool hasEnoughIngredient = currentQuantity >= dishIngredient.Quantity;
 
-                    // Формируем сообщение о нехватке ингредиента
                     string missingIngredientMessage = $"- {dishIngredient.Ingredients.Name} (нужно: {dishIngredient.Quantity}, на складе: {currentQuantity})";
 
-                    // Обновляем StopList
                     if (!hasEnoughIngredient)
                     {
-                        // Если ингредиента недостаточно и блюдо не в стоп-листе
+                      
                         if (!dish.StopList)
                         {
                             dish.StopList = true;
@@ -233,10 +223,8 @@ namespace RestFlowSystem.PagesAP
                     }
                     else
                     {
-                        // Если ингредиента достаточно, проверяем, можно ли снять блюдо из стоп-листа
                         if (dish.StopList)
                         {
-                            // Проверяем остальные ингредиенты блюда
                             var otherIngredients = context.DishIngredients
                                 .Include(di => di.Ingredients)
                                 .Where(di => di.MenuID == menuId && di.IngredientID != ingredientId)
@@ -262,7 +250,6 @@ namespace RestFlowSystem.PagesAP
                             }
                             else
                             {
-                                // Если других ингредиентов недостаточно, блюдо остаётся в стоп-листе
                                 stopListMessages.Add($"Блюдо '{dish.Name}' остаётся в стоп-листе из-за нехватки других ингредиентов:{otherMissingIngredients}");
                                 System.Diagnostics.Debug.WriteLine($"Блюдо '{dish.Name}' остаётся в стоп-листе: {otherMissingIngredients}");
                             }
@@ -272,7 +259,6 @@ namespace RestFlowSystem.PagesAP
 
                 context.SaveChanges();
 
-                // Показываем сообщения о стоп-листе
                 if (stopListMessages.Any())
                 {
                     MessageBox.Show(string.Join("\n\n", stopListMessages), "Обновление стоп-листа", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -294,7 +280,6 @@ namespace RestFlowSystem.PagesAP
                 var inventoryItem = button.DataContext as Inventory;
                 if (inventoryItem == null) return;
 
-                // Создаём окно для ввода нового количества
                 var window = new Window
                 {
                     Title = "Обновление количества",
@@ -317,7 +302,6 @@ namespace RestFlowSystem.PagesAP
                         inventoryItem.LastDeliveryDate = DateTime.Today;
                         Entities.GetContext().SaveChanges();
 
-                        // Обновляем StopList для всех блюд, использующих этот ингредиент
                         UpdateMenuStopList(inventoryItem.IngredientID, newQuantity);
 
                         MessageBox.Show("Количество успешно обновлено!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -362,31 +346,26 @@ namespace RestFlowSystem.PagesAP
                 var context = Entities.GetContext();
                 var ingredientId = selectedInventory.IngredientID;
 
-                // Находим все блюда, которые используют этот ингредиент, ДО удаления
                 var affectedDishes = context.DishIngredients
                     .Where(di => di.IngredientID == ingredientId)
                     .Select(di => di.MenuID)
                     .Distinct()
                     .ToList();
 
-                // Удаляем связанные записи из DishIngredients
                 var dishIngredientsToDelete = context.DishIngredients
                     .Where(di => di.IngredientID == ingredientId)
                     .ToList();
                 context.DishIngredients.RemoveRange(dishIngredientsToDelete);
 
-                // Удаляем запись из Inventory
                 var inventoryToDelete = context.Inventory.FirstOrDefault(i => i.InventoryID == selectedInventory.InventoryID);
                 if (inventoryToDelete != null)
                 {
                     context.Inventory.Remove(inventoryToDelete);
                 }
 
-                // Проверяем, используется ли ингредиент в других таблицах
                 var isIngredientUsedInPurchases = context.PurchaseDetails.Any(pd => pd.IngredientID == ingredientId);
                 var isIngredientUsedInInventory = context.Inventory.Any(i => i.IngredientID == ingredientId && i.InventoryID != selectedInventory.InventoryID);
 
-                // Если ингредиент больше не используется, удаляем его из Ingredients
                 if (!isIngredientUsedInPurchases && !isIngredientUsedInInventory)
                 {
                     var ingredientToDelete = context.Ingredients.FirstOrDefault(i => i.IngredientID == ingredientId);
@@ -396,24 +375,20 @@ namespace RestFlowSystem.PagesAP
                     }
                 }
 
-                // Сохраняем изменения
                 context.SaveChanges();
 
-                // Обновляем StopList для затронутых блюд
                 List<string> stopListMessages = new List<string>();
                 foreach (var menuId in affectedDishes)
                 {
                     var dish = context.Menu.FirstOrDefault(m => m.MenuID == menuId);
                     if (dish == null) continue;
 
-                    // Проверяем, остались ли у блюда ингредиенты
                     var remainingIngredients = context.DishIngredients
                         .Where(di => di.MenuID == menuId)
                         .ToList();
 
                     if (!remainingIngredients.Any())
                     {
-                        // Если ингредиентов больше нет, добавляем блюдо в StopList
                         if (!dish.StopList)
                         {
                             dish.StopList = true;
@@ -422,7 +397,6 @@ namespace RestFlowSystem.PagesAP
                     }
                     else
                     {
-                        // Если ингредиенты есть, проверяем их количество на складе
                         bool hasEnoughIngredients = true;
                         string missingIngredients = "";
                         foreach (var dishIngredient in remainingIngredients)
@@ -456,7 +430,7 @@ namespace RestFlowSystem.PagesAP
                 }
 
                 MessageBox.Show("Ингредиент успешно удалён!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-                LoadInventory(); // Обновляем таблицу
+                LoadInventory(); 
             }
             catch (Exception ex)
             {

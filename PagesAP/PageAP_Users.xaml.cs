@@ -99,7 +99,6 @@ namespace RestFlowSystem.PagesAP
                     var user = item as Users;
                     if (user == null) return false;
 
-                    // Поиск по всем полям
                     string searchText = SearchUser.Text?.ToLower() ?? "";
                     bool searchMatch = string.IsNullOrWhiteSpace(searchText) ||
                                        (user.Employees?.LastName?.ToLower().Contains(searchText) ?? false) ||
@@ -110,13 +109,11 @@ namespace RestFlowSystem.PagesAP
                                        (user.Employees?.Positions?.PositionName?.ToLower().Contains(searchText) ?? false) ||
                                        (user.Roles?.RoleName?.ToLower().Contains(searchText) ?? false);
 
-                    // Фильтрация по роли
                     var selectedRole = FilterRole.SelectedItem as ComboBoxItem;
                     bool roleMatch = selectedRole == null ||
                                      selectedRole.Content.ToString() == "Все" ||
                                      (selectedRole.Tag != null && user.RoleID == (int)selectedRole.Tag);
 
-                    // Фильтрация по доступу
                     var selectedAccess = FilterAccess.SelectedItem as ComboBoxItem;
                     bool accessMatch = selectedAccess == null ||
                                        selectedAccess.Content.ToString() == "Все" ||

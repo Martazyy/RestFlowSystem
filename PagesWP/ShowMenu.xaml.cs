@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using System.IO;
 
 namespace RestFlowSystem.PagesWP
 {
@@ -29,25 +28,28 @@ namespace RestFlowSystem.PagesWP
                 return;
             }
 
-            // Загрузка изображения
-            if (_menu.Image != null && _menu.Image.Length > 0)
+            try
             {
-                using (var ms = new MemoryStream(_menu.Image))
+                if (!string.IsNullOrEmpty(_menu.Image))
                 {
-                    var bitmap = new BitmapImage();
+                    BitmapImage bitmap = new BitmapImage();
                     bitmap.BeginInit();
-                    bitmap.StreamSource = ms;
+                    bitmap.UriSource = new Uri(_menu.Image, UriKind.Absolute); 
                     bitmap.CacheOption = BitmapCacheOption.OnLoad;
                     bitmap.EndInit();
                     PreviewImage.Source = bitmap;
                 }
+                else
+                {
+                    PreviewImage.Source = null;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                PreviewImage.Source = null;
+                MessageBox.Show($"Ошибка при загрузке изображения: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                PreviewImage.Source = null; 
             }
 
-            // Заполнение текстовых полей
             NameTextBlock.Text = _menu.Name;
             DescriptionTextBlock.Text = _menu.Description ?? "Описание отсутствует";
             CategoryTextBlock.Text = db.MenuCategories
@@ -55,7 +57,6 @@ namespace RestFlowSystem.PagesWP
             PriceTextBlock.Text = _menu.Price.ToString("F2");
             StopListCheckBox.IsChecked = _menu.StopList;
 
-            // Загрузка ингредиентов
             var ingredients = db.DishIngredients
                 .Include(di => di.Ingredients)
                 .Where(di => di.MenuID == _menu.MenuID)

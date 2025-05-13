@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,14 +15,13 @@ namespace RestFlowSystem.PagesAP
         private Entities db = Entities.GetContext();
         private Menu _menu;
         private ObservableCollection<DishIngredients> _tempIngredients;
-        private CollectionViewSource _ingredientsViewSource; // Для фильтрации ингредиентов
+        private CollectionViewSource _ingredientsViewSource;
 
         public AddEditMenu(Menu selectedMenu = null, bool isAdding = true)
         {
             InitializeComponent();
             _tempIngredients = new ObservableCollection<DishIngredients>();
 
-            // Инициализация CollectionViewSource
             _ingredientsViewSource = (CollectionViewSource)Resources["IngredientsViewSource"];
 
             if (selectedMenu != null)
@@ -44,7 +42,6 @@ namespace RestFlowSystem.PagesAP
             LoadImagePreview();
             ClearErrors();
 
-            // Сбрасываем выбор и текст в ComboBox при инициализации
             NewIngredientComboBox.SelectedIndex = -1;
             NewIngredientComboBox.Text = string.Empty;
             _ingredientsViewSource.View.Filter = null;
@@ -68,65 +65,50 @@ namespace RestFlowSystem.PagesAP
 
         private void LoadImagePreview()
         {
-            if (_menu.Image != null && _menu.Image.Length > 0)
+            if (string.IsNullOrWhiteSpace(_menu.Image))
             {
-                using (var ms = new MemoryStream(_menu.Image))
-                {
-                    var bitmap = new BitmapImage();
-                    bitmap.BeginInit();
-                    bitmap.StreamSource = ms;
-                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmap.EndInit();
-                    PreviewImage.Source = bitmap;
-                }
+                PreviewImage.Source = new BitmapImage(new Uri("/Images/placeholder.jpg", UriKind.Relative));
+                return;
             }
-            else
+
+            try
             {
-                PreviewImage.Source = null;
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(_menu.Image, UriKind.Absolute);
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.EndInit();
+                PreviewImage.Source = bitmap;
+            }
+            catch (Exception)
+            {
+                PreviewImage.Source = new BitmapImage(new Uri("/Images/placeholder.jpg", UriKind.Relative));
             }
         }
 
-        private void LoadImage_Click(object sender, RoutedEventArgs e)
+        private void ImageUrlTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var openFileDialog = new Microsoft.Win32.OpenFileDialog
-            {
-                Filter = "Image files (*.jpg, *.png)|*.jpg;*.png|All files (*.*)|*.*",
-                Title = "Выберите изображение блюда"
-            };
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                try
-                {
-                    _menu.Image = File.ReadAllBytes(openFileDialog.FileName);
-                    LoadImagePreview();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Ошибка при загрузке изображения: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
+            LoadImagePreview(); 
         }
 
         private void ClearErrors()
         {
-            NameError.Visibility = Visibility.Collapsed;
-            DescriptionError.Visibility = Visibility.Collapsed;
-            PriceError.Visibility = Visibility.Collapsed;
-            QuantityError.Visibility = Visibility.Collapsed;
+            NameError.Text = "";
+            DescriptionError.Text = "";
+            CategoryError.Text = "";
+            PriceError.Text = "";
+            QuantityError.Text = "";
         }
 
         private void RefreshIngredientsComboBox()
         {
             var ingredients = db.Ingredients.ToList();
 
-            // Привязываем список ингредиентов к CollectionViewSource
             _ingredientsViewSource.Source = ingredients;
 
             if (!ingredients.Any())
             {
                 QuantityError.Text = "Нет доступных ингредиентов. Добавьте ингредиенты на странице склада.";
-                QuantityError.Visibility = Visibility.Visible;
                 NewIngredientComboBox.IsEnabled = false;
             }
             else
@@ -140,15 +122,14 @@ namespace RestFlowSystem.PagesAP
             var selectedIngredient = NewIngredientComboBox.SelectedItem as Ingredients;
             if (selectedIngredient != null)
             {
-                // Устанавливаем UnitComboBox в соответствии с Unit ингредиента
                 string unit = selectedIngredient.Unit ?? "г";
                 UnitComboBox.SelectedItem = UnitComboBox.Items.Cast<ComboBoxItem>()
                     .FirstOrDefault(item => item.Content.ToString() == unit) ?? UnitComboBox.Items[0];
-                UnitComboBox.IsEnabled = false; // Запрещаем изменение единицы измерения
+                UnitComboBox.IsEnabled = false;
             }
             else
             {
-                UnitComboBox.SelectedIndex = 0; // Сбрасываем на "г"
+                UnitComboBox.SelectedIndex = 0;
                 UnitComboBox.IsEnabled = true;
             }
         }
@@ -167,7 +148,6 @@ namespace RestFlowSystem.PagesAP
                 return ingredient != null && (ingredient.Name?.ToLower().Contains(filterText) ?? false);
             };
 
-            // Открываем выпадающий список только если есть текст
             if (!string.IsNullOrWhiteSpace(filterText) && !NewIngredientComboBox.IsDropDownOpen)
             {
                 NewIngredientComboBox.IsDropDownOpen = true;
@@ -181,20 +161,17 @@ namespace RestFlowSystem.PagesAP
             if (NewIngredientComboBox.SelectedItem == null)
             {
                 QuantityError.Text = "Выберите ингредиент!";
-                QuantityError.Visibility = Visibility.Visible;
                 return;
             }
 
             if (!decimal.TryParse(NewQuantityTextBox.Text, out decimal quantity) || quantity <= 0)
             {
                 QuantityError.Text = "Введите корректное количество (положительное число)!";
-                QuantityError.Visibility = Visibility.Visible;
                 return;
             }
 
             int selectedIngredientId = (int)NewIngredientComboBox.SelectedValue;
 
-            // Проверка на дублирование ингредиента
             bool ingredientExists = false;
             if (_menu.MenuID > 0)
             {
@@ -210,7 +187,6 @@ namespace RestFlowSystem.PagesAP
             if (ingredientExists)
             {
                 QuantityError.Text = "Этот ингредиент уже добавлен в блюдо!";
-                QuantityError.Visibility = Visibility.Visible;
                 return;
             }
 
@@ -233,13 +209,11 @@ namespace RestFlowSystem.PagesAP
 
             LoadIngredients();
 
-            // Сбрасываем выбор и текст в ComboBox
             NewIngredientComboBox.SelectedIndex = -1;
             NewIngredientComboBox.Text = string.Empty;
             NewQuantityTextBox.Text = "0";
-            UnitComboBox.SelectedIndex = 0; // Сбрасываем на "г"
+            UnitComboBox.SelectedIndex = 0;
 
-            // Сбрасываем фильтр
             _ingredientsViewSource.View.Filter = null;
             _ingredientsViewSource.View.Refresh();
         }
@@ -276,7 +250,6 @@ namespace RestFlowSystem.PagesAP
             bool isValid = true;
             ClearErrors();
 
-            // Проверка на отсутствие ингредиентов
             bool hasIngredients = false;
             if (_menu.MenuID > 0)
             {
@@ -289,21 +262,19 @@ namespace RestFlowSystem.PagesAP
 
             if (!hasIngredients)
             {
-                QuantityError.Text = "Блюдо не может быть сохранено без ингредиентов! Добавьте хотя бы один ингредиент.";
-                QuantityError.Visibility = Visibility.Visible;
+                QuantityError.Text = "Добавьте хотя бы один ингредиент";
                 isValid = false;
             }
 
             if (string.IsNullOrWhiteSpace(_menu.Name))
             {
-                NameError.Text = "Введите название блюда!";
-                NameError.Visibility = Visibility.Visible;
+                NameError.Text = "Введите название блюда";
                 isValid = false;
             }
 
             if (_menu.CategoryID == 0)
             {
-                MessageBox.Show("Выберите категорию!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                CategoryError.Text = "Выберите категорию";
                 isValid = false;
             }
 
@@ -322,24 +293,20 @@ namespace RestFlowSystem.PagesAP
             if (isPriceChanged || _menu.MenuID == 0)
             {
                 string priceText = PriceTextBox.Text.Trim();
-                Console.WriteLine($"PriceTextBox.Text after Trim: '{priceText}'");
 
                 if (string.IsNullOrWhiteSpace(priceText))
                 {
-                    PriceError.Text = "Цена не может быть пустой!";
-                    PriceError.Visibility = Visibility.Visible;
+                    PriceError.Text = "Введите цену";
                     isValid = false;
                 }
                 else if (!decimal.TryParse(priceText, NumberStyles.Any, CultureInfo.InvariantCulture, out price))
                 {
-                    PriceError.Text = "Введите корректное число для цены (используйте точку или запятую)!";
-                    PriceError.Visibility = Visibility.Visible;
+                    PriceError.Text = "Введите корректное число для цены";
                     isValid = false;
                 }
                 else if (price <= 0)
                 {
-                    PriceError.Text = "Цена должна быть положительным числом!";
-                    PriceError.Visibility = Visibility.Visible;
+                    PriceError.Text = "Цена должна быть больше 0";
                     isValid = false;
                 }
                 else
@@ -348,16 +315,29 @@ namespace RestFlowSystem.PagesAP
                 }
             }
 
+            if (!string.IsNullOrWhiteSpace(_menu.Image))
+            {
+                try
+                {
+                    new Uri(_menu.Image, UriKind.Absolute);
+                }
+                catch
+                {
+                    NameError.Text = "Введите корректный URL для изображения";
+                    isValid = false;
+                }
+            }
+
             if (!isValid)
             {
+                MessageBox.Show("Пожалуйста, проверьте правильность заполнения полей.", "Ошибки ввода", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
             var existingMenu = db.Menu.FirstOrDefault(m => m.Name == _menu.Name && m.MenuID != _menu.MenuID);
             if (existingMenu != null)
             {
-                NameError.Text = "Блюдо с таким названием уже существует!";
-                NameError.Visibility = Visibility.Visible;
+                NameError.Text = "Блюдо с таким названием уже существует";
                 return;
             }
 

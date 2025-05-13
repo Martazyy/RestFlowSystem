@@ -3,17 +3,18 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using RestFlowSystem.PagesAP;
+using RestFlowSystem.PagesWP;
 
 namespace RestFlowSystem
 {
-    public partial class AdminPanel : Window
+    public partial class ChefPanel : Window
     {
         private bool isLoggingOut = false; 
 
-        public AdminPanel(string login)
+        public ChefPanel(string login)
         {
             InitializeComponent();
-            MainFrame.Navigate(new PageAP_Employees());
+            MainFrame.Navigate(new PageWP_Menu());
 
             try
             {
@@ -39,6 +40,26 @@ namespace RestFlowSystem
             }
         }
 
+        private void Menu_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new PageAP_Menu());
+        }
+
+        private void Orders_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new PageAP_Orders());
+        }
+
+        private void Purchases_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new PageAP_Purchases());
+        }
+
+        private void Inventory_Click(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(new PageAP_Inventory());
+        }
+
         private void Logout_Click(object sender, RoutedEventArgs e)
         {
             isLoggingOut = true;
@@ -47,41 +68,6 @@ namespace RestFlowSystem
             loginWindow.WindowState = this.WindowState;
             loginWindow.Show();
             Close(); 
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(new PageAP_Employees());
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(new PageAP_Users());
-        }
-
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(new PageAP_Menu());
-        }
-
-        private void Button_Click_3(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(new PageAP_Purchases());
-        }
-
-        private void Button_Click_5(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(new PageAP_Orders());
-        }
-
-        private void Button_Click_6(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(new PageAP_Inventory());
-        }
-
-        private void Button_Click_7(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(new PageAP_Reports());
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

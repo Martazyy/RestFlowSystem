@@ -19,7 +19,6 @@
                 <Setter Property="Margin" Value="0,2,0,5"/>
                 <Setter Property="Visibility" Value="Collapsed"/>
             </Style>
-            <!-- Стиль для кнопок Up/Down -->
             <Style x:Key="SpinnerButtonStyle" TargetType="Button">
                 <Setter Property="Width" Value="20"/>
                 <Setter Property="Height" Value="15"/>
@@ -36,29 +35,17 @@
                 <Grid Margin="20">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <!-- Заголовок -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Подзаголовок -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Стол -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Ошибка для номера стола -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Официант -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Дата -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Статус -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Способ оплаты -->
                         <RowDefinition Height="*"/>
-                        <!-- Блюда -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Ошибка количества -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Общая стоимость -->
                         <RowDefinition Height="Auto"/>
-                        <!-- Кнопки -->
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>

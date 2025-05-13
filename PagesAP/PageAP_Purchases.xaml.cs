@@ -63,7 +63,6 @@ namespace RestFlowSystem.PagesAP
                     _purchases.Add(purchase);
                 }
 
-                // Установка минимальной и максимальной даты для DatePicker
                 _minDate = _purchases.Any() ? _purchases.Min(p => p.PurchaseDate) : (DateTime?)null;
                 _maxDate = _purchases.Any() ? _purchases.Max(p => p.PurchaseDate) : (DateTime?)null;
 
@@ -88,14 +87,12 @@ namespace RestFlowSystem.PagesAP
                     var purchase = item as Purchases;
                     if (purchase == null) return false;
 
-                    // Поиск по всем полям
                     string searchText = SearchPurchase.Text?.ToLower() ?? "";
                     bool searchMatch = string.IsNullOrWhiteSpace(searchText) ||
                                        (purchase.Suppliers?.SupplierName?.ToLower().Contains(searchText) ?? false) ||
                                        (purchase.PurchaseDate.ToString("dd.MM.yyyy").Contains(searchText)) ||
                                        (purchase.TotalAmount.ToString().Contains(searchText));
 
-                    // Фильтрация по периоду
                     bool dateMatch = true;
                     if (DateFrom.SelectedDate.HasValue)
                     {
@@ -176,12 +173,10 @@ namespace RestFlowSystem.PagesAP
 
             try
             {
-                // Находим все детали закупки
                 var purchaseDetails = db.PurchaseDetails
                     .Where(pd => pd.PurchaseID == selectedPurchase.PurchaseID)
                     .ToList();
 
-                // Корректируем склад
                 foreach (var detail in purchaseDetails)
                 {
                     var inventory = db.Inventory.FirstOrDefault(i => i.IngredientID == detail.IngredientID);
@@ -195,21 +190,18 @@ namespace RestFlowSystem.PagesAP
                     }
                 }
 
-                // Удаляем детали закупки
                 db.PurchaseDetails.RemoveRange(purchaseDetails);
 
-                // Удаляем саму закупку
                 var purchaseToDelete = db.Purchases.FirstOrDefault(p => p.PurchaseID == selectedPurchase.PurchaseID);
                 if (purchaseToDelete != null)
                 {
                     db.Purchases.Remove(purchaseToDelete);
                 }
 
-                // Сохраняем изменения
                 db.SaveChanges();
 
                 MessageBox.Show("Закупка успешно удалена!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-                LoadPurchases(); // Обновляем таблицу
+                LoadPurchases(); 
             }
             catch (Exception ex)
             {

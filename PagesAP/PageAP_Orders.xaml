@@ -31,7 +31,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Панель фильтров и кнопок -->
         <Grid Grid.Row="0" Margin="10,10,10,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -39,7 +38,6 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Поиск и фильтры слева -->
             <WrapPanel Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal" Margin="0,0,10,0">
                     <TextBlock Text="Поиск:" VerticalAlignment="Center" Margin="0,0,5,0"/>
@@ -53,7 +51,6 @@
                               SelectionChanged="FilterStatus_SelectionChanged" 
                               HorizontalAlignment="Left">
                         <ComboBoxItem Content="Все"/>
-                        <!-- Статусы добавляются динамически в коде -->
                     </ComboBox>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,0,10,0">
@@ -62,14 +59,12 @@
                               SelectionChanged="FilterPaymentMethod_SelectionChanged" 
                               HorizontalAlignment="Left">
                         <ComboBoxItem Content="Все"/>
-                        <!-- Типы оплаты добавляются динамически в коде -->
                     </ComboBox>
                 </StackPanel>
                 <Button x:Name="ClearFilter" Content="Очистить фильтр" FontSize="10" 
                         Click="ClearFilter_Click" Style="{StaticResource ClearButton}"/>
             </WrapPanel>
 
-            <!-- Кнопки справа -->
             <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Button Content="+ Добавить заказ" Style="{StaticResource AddButtonStyle}" 
                         Click="AddOrder_Click" Width="180" Height="44" Margin="0,0,10,0"/>
@@ -78,7 +73,6 @@
             </StackPanel>
         </Grid>
 
-        <!-- Таблица заказов -->
         <Grid Grid.Row="1" Margin="10,0,10,10">
             <DataGrid x:Name="DGridOrders" 
                       ItemsSource="{Binding Source={StaticResource OrderViewSource}}"

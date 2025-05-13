@@ -8,7 +8,7 @@ namespace RestFlowSystem
 {
     public partial class WaiterPanel : Window
     {
-        private bool isLoggingOut = false; // Флаг для отслеживания смены аккаунта
+        private bool isLoggingOut = false; 
 
         public WaiterPanel(string login)
         {
@@ -51,18 +51,16 @@ namespace RestFlowSystem
 
         private void Logout_Click(object sender, RoutedEventArgs e)
         {
-            // Устанавливаем флаг, чтобы указать, что это смена аккаунта
             isLoggingOut = true;
 
             MainWindow loginWindow = new MainWindow();
             loginWindow.WindowState = this.WindowState;
             loginWindow.Show();
-            Close(); // Закрываем окно официанта
+            Close(); 
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            // Показываем диалог подтверждения только если это НЕ смена аккаунта
             if (!isLoggingOut)
             {
                 MessageBoxResult result = MessageBox.Show(

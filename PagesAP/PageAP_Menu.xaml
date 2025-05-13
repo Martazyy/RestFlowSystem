@@ -37,7 +37,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Панель фильтров и кнопок -->
         <Grid Grid.Row="0" Margin="10,10,10,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -45,7 +44,6 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Поиск и фильтры слева -->
             <WrapPanel Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <StackPanel Orientation="Horizontal" Margin="0,0,10,0">
                     <TextBlock Text="Поиск:" VerticalAlignment="Center" Margin="0,0,5,0"/>
@@ -59,7 +57,6 @@
                               SelectionChanged="FilterCategory_SelectionChanged" 
                               HorizontalAlignment="Left">
                         <ComboBoxItem Content="Все"/>
-                        <!-- Категории добавляются динамически в коде -->
                     </ComboBox>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,0,10,0">
@@ -76,7 +73,6 @@
                         Click="ClearFilter_Click" Style="{StaticResource ClearButton}"/>
             </WrapPanel>
 
-            <!-- Кнопки справа -->
             <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Button Content="+ Добавить блюдо" Style="{StaticResource AddButtonStyle}" 
                         Click="AddMenu_Click" Width="180" Height="44" Margin="0,0,10,0"/>
@@ -85,7 +81,6 @@
             </StackPanel>
         </Grid>
 
-        <!-- Таблица меню -->
         <Grid Grid.Row="1" Margin="10,0,10,10">
             <DataGrid x:Name="DGridMenu" 
                       ItemsSource="{Binding Source={StaticResource MenuViewSource}}"
@@ -132,7 +127,6 @@
                        Visibility="Collapsed"/>
         </Grid>
 
-        <!-- Popup для увеличенного изображения -->
         <Popup x:Name="ImagePopup" StaysOpen="False" Placement="Center" AllowsTransparency="True">
             <Border Background="#80000000" MouseDown="Border_MouseDown">
                 <Image x:Name="PopupImage" MaxHeight="500" MaxWidth="500" Stretch="Uniform" Margin="20"/>

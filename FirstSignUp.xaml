@@ -20,14 +20,12 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- HEADER -->
         <Grid Grid.Row="0" Style="{StaticResource HeaderGridStyle}">
             <Viewbox Stretch="Uniform" HorizontalAlignment="Left">
                 <TextBlock Text="RestFlow" Style="{StaticResource HeaderTextStyle}"/>
             </Viewbox>
         </Grid>
 
-        <!-- MAIN CONTENT -->
         <Viewbox Stretch="Uniform" MaxWidth="1000" MaxHeight="1000" Margin="0,100,0,20" Grid.RowSpan="2">
             <Border Style="{StaticResource CardBorderStyle}">
                 <Grid Style="{StaticResource MainGridStyle}">
@@ -58,11 +56,9 @@
                         <ColumnDefinition Width="293*"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Заголовок и подзаголовок -->
                     <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Добро пожаловать в систему RestFlow" Style="{StaticResource TitleTextStyle}"/>
                     <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Text="Начальная регистрация администратора системы" Style="{StaticResource SubtitleTextStyle}"/>
 
-                    <!-- Поля -->
                     <TextBlock Grid.Row="2" Text="Фамилия" Style="{StaticResource InputTextBlockStyle}"/>
                     <TextBox Grid.Row="2" Grid.Column="1" Name="SurnameTextBox" Style="{StaticResource InputBoxStyle}"/>
                     <TextBlock Grid.Row="3" Grid.Column="1" Name="SurnameErrorText" Style="{StaticResource ErrorTextStyle}"/>
@@ -96,7 +92,6 @@
                     <TextBox Grid.Row="16" Grid.Column="1" Name="PasswordTextBox" Style="{StaticResource InputBoxStyle}" Visibility="Hidden"/>
                     <TextBlock Grid.Row="17" Grid.Column="1" Name="PasswordErrorText" Style="{StaticResource ErrorTextStyle}"/>
 
-                    <!-- CheckBox и Кнопка -->
                     <CheckBox Grid.Row="17" Grid.Column="1" Name="ShowPasswordCheckBox" Content="Показать пароль" Style="{StaticResource ShowPasswordCheckBoxStyle}" Checked="ShowPasswordCheckBox_Checked" Unchecked="ShowPasswordCheckBox_Unchecked"/>
                     <Button Grid.Row="18" Grid.Column="1" Content="Зарегистрироваться" Style="{StaticResource RoundedButtonStyle}" Click="StartButton_Click"/>
                 </Grid>

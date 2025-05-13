@@ -99,7 +99,6 @@ namespace RestFlowSystem.PagesAP
                     var menuItem = item as Menu;
                     if (menuItem == null) return false;
 
-                    // Поиск по всем полям
                     string searchText = SearchMenu.Text?.ToLower() ?? "";
                     bool searchMatch = string.IsNullOrWhiteSpace(searchText) ||
                                        (menuItem.Name?.ToLower().Contains(searchText) ?? false) ||
@@ -107,13 +106,11 @@ namespace RestFlowSystem.PagesAP
                                        (menuItem.MenuCategories?.CategoryName?.ToLower().Contains(searchText) ?? false) ||
                                        (menuItem.Price.ToString("F2").Contains(searchText));
 
-                    // Фильтрация по категории
                     var selectedCategory = FilterCategory.SelectedItem as ComboBoxItem;
                     bool categoryMatch = selectedCategory == null ||
                                          selectedCategory.Content.ToString() == "Все" ||
                                          (selectedCategory.Tag != null && menuItem.CategoryID == (int)selectedCategory.Tag);
 
-                    // Фильтрация по стоп-листу
                     var selectedStopList = FilterStopList.SelectedItem as ComboBoxItem;
                     bool stopListMatch = selectedStopList == null ||
                                          selectedStopList.Content.ToString() == "Все" ||
@@ -178,6 +175,27 @@ namespace RestFlowSystem.PagesAP
                 return;
             }
 
+            var menuWithOrders = menuForRemoving
+                .Select(menu => new
+                {
+                    MenuItem = menu,
+                    OrdersCount = _context.OrderItems.Count(o => o.MenuID == menu.MenuID)
+                })
+                .Where(x => x.OrdersCount > 0)
+                .ToList();
+
+            if (menuWithOrders.Any())
+            {
+                string warningMessage = "Некоторые блюда не могут быть удалены, так как они участвуют в заказах:\n\n";
+                foreach (var item in menuWithOrders)
+                {
+                    warningMessage += $"- \"{item.MenuItem.Name}\" участвует в {item.OrdersCount} заказ(ах)\n";
+                }
+
+                MessageBox.Show(warningMessage, "Удаление невозможно", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             if (MessageBox.Show($"Вы точно хотите удалить выбранные элементы? Количество: {menuForRemoving.Count}", "Внимание",
                 MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
@@ -195,6 +213,7 @@ namespace RestFlowSystem.PagesAP
             }
         }
 
+
         private void EditMenu_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -211,20 +230,16 @@ namespace RestFlowSystem.PagesAP
         {
             if (sender is Image image && image.DataContext is Menu menuItem)
             {
-                // Устанавливаем источник изображения для Popup
                 PopupImage.Source = image.Source;
 
-                // Открываем Popup
                 ImagePopup.IsOpen = true;
 
-                // Захватываем фокус, чтобы Popup оставался открытым
                 ImagePopup.Focus();
             }
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            // Закрываем Popup при клике вне изображения
             if (e.OriginalSource is Border)
             {
                 ImagePopup.IsOpen = false;

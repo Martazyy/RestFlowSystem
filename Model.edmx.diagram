@@ -4,38 +4,39 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="5667ba47f4854345ab727f77b4cd7bf2" Name="Diagram1" ZoomLevel="91">
-        <EntityTypeShape EntityType="RestFlowDBModel.DishIngredients" Width="1.5" PointX="13" PointY="11.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="RestFlowDBModel.Employees" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="RestFlowDBModel.Ingredients" Width="1.5" PointX="10.75" PointY="12.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="RestFlowDBModel.Inventory" Width="1.5" PointX="13" PointY="15.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="RestFlowDBModel.Menu" Width="1.5" PointX="8.25" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="RestFlowDBModel.MenuCategories" Width="1.5" PointX="6" PointY="13.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="RestFlowDBModel.OrderItems" Width="1.5" PointX="10.5" PointY="5" IsExpanded="true" />
-        <EntityTypeShape EntityType="RestFlowDBModel.Orders" Width="1.5" PointX="5.25" PointY="4.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="RestFlowDBModel.OrderStatuses" Width="1.5" PointX="3" PointY="9" IsExpanded="true" />
-        <EntityTypeShape EntityType="RestFlowDBModel.PaymentMethods" Width="1.5" PointX="3" PointY="11.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="RestFlowDBModel.Positions" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="RestFlowDBModel.PurchaseDetails" Width="1.5" PointX="16" PointY="12" IsExpanded="true" />
-        <EntityTypeShape EntityType="RestFlowDBModel.Purchases" Width="1.5" PointX="11.625" PointY="1.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="RestFlowDBModel.Roles" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="RestFlowDBModel.Suppliers" Width="1.5" PointX="8.25" PointY="1.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="RestFlowDBModel.Users" Width="1.5" PointX="5.25" PointY="0.875" IsExpanded="true" />
-        <AssociationConnector Association="RestFlowDBModel.FK__DishIngre__Ingre__6B24EA82" ManuallyRouted="false" />
-        <AssociationConnector Association="RestFlowDBModel.FK__DishIngre__MenuI__6A30C649" ManuallyRouted="false" />
-        <AssociationConnector Association="RestFlowDBModel.FK__Employees__Posit__3B75D760" ManuallyRouted="false" />
-        <AssociationConnector Association="RestFlowDBModel.FK__Orders__WaiterID__5CD6CB2B" ManuallyRouted="false" />
-        <AssociationConnector Association="RestFlowDBModel.FK__Users__EmployeeI__4316F928" ManuallyRouted="false" />
-        <AssociationConnector Association="RestFlowDBModel.FK__Inventory__Ingre__7C4F7684" ManuallyRouted="false" />
-        <AssociationConnector Association="RestFlowDBModel.FK__PurchaseD__Ingre__787EE5A0" ManuallyRouted="false" />
-        <AssociationConnector Association="RestFlowDBModel.FK__Menu__CategoryID__4AB81AF0" ManuallyRouted="false" />
-        <AssociationConnector Association="RestFlowDBModel.FK__OrderItem__MenuI__6383C8BA" ManuallyRouted="false" />
-        <AssociationConnector Association="RestFlowDBModel.FK__OrderItem__Order__628FA481" ManuallyRouted="false" />
-        <AssociationConnector Association="RestFlowDBModel.FK__Orders__PaymentM__5DCAEF64" ManuallyRouted="false" />
-        <AssociationConnector Association="RestFlowDBModel.FK__Orders__StatusID__5EBF139D" ManuallyRouted="false" />
-        <AssociationConnector Association="RestFlowDBModel.FK__PurchaseD__Purch__778AC167" ManuallyRouted="false" />
-        <AssociationConnector Association="RestFlowDBModel.FK__Purchases__Suppl__72C60C4A" ManuallyRouted="false" />
-        <AssociationConnector Association="RestFlowDBModel.FK__Users__RoleID__440B1D61" ManuallyRouted="false" />
+      <Diagram DiagramId="6ddb634dce7247009e20afb27760ef5f" Name="Diagram1">
+        <EntityTypeShape EntityType="Entities.DishIngredients" Width="1.5" PointX="11" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Entities.Employees" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Entities.Ingredients" Width="1.5" PointX="8.75" PointY="12.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Entities.Inventory" Width="1.5" PointX="11" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Entities.Menu" Width="1.5" PointX="8.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Entities.MenuCategories" Width="1.5" PointX="6" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Entities.OrderItems" Width="1.5" PointX="10.5" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Entities.Orders" Width="1.5" PointX="5.25" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Entities.OrderStatuses" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Entities.PaymentMethods" Width="1.5" PointX="3" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Entities.Positions" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Entities.PurchaseDetails" Width="1.5" PointX="14" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Entities.Purchases" Width="1.5" PointX="11.75" PointY="18.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Entities.Roles" Width="1.5" PointX="6" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Entities.Suppliers" Width="1.5" PointX="9.5" PointY="18.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Entities.sysdiagrams" Width="1.5" PointX="0.75" PointY="12.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Entities.Users" Width="1.5" PointX="8.25" PointY="5" IsExpanded="true" />
+        <AssociationConnector Association="Entities.FK__DishIngre__Ingre__6B24EA82" ManuallyRouted="false" />
+        <AssociationConnector Association="Entities.FK__DishIngre__MenuI__6A30C649" ManuallyRouted="false" />
+        <AssociationConnector Association="Entities.FK__Employees__Posit__3B75D760" ManuallyRouted="false" />
+        <AssociationConnector Association="Entities.FK__Orders__WaiterID__5CD6CB2B" ManuallyRouted="false" />
+        <AssociationConnector Association="Entities.FK__Users__EmployeeI__4316F928" ManuallyRouted="false" />
+        <AssociationConnector Association="Entities.FK__Inventory__Ingre__7C4F7684" ManuallyRouted="false" />
+        <AssociationConnector Association="Entities.FK__PurchaseD__Ingre__787EE5A0" ManuallyRouted="false" />
+        <AssociationConnector Association="Entities.FK__Menu__CategoryID__4AB81AF0" ManuallyRouted="false" />
+        <AssociationConnector Association="Entities.FK__OrderItem__MenuI__6383C8BA" ManuallyRouted="false" />
+        <AssociationConnector Association="Entities.FK__OrderItem__Order__628FA481" ManuallyRouted="false" />
+        <AssociationConnector Association="Entities.FK__Orders__PaymentM__5DCAEF64" ManuallyRouted="false" />
+        <AssociationConnector Association="Entities.FK__Orders__StatusID__5EBF139D" ManuallyRouted="false" />
+        <AssociationConnector Association="Entities.FK__PurchaseD__Purch__778AC167" ManuallyRouted="false" />
+        <AssociationConnector Association="Entities.FK__Purchases__Suppl__72C60C4A" ManuallyRouted="false" />
+        <AssociationConnector Association="Entities.FK__Users__RoleID__440B1D61" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

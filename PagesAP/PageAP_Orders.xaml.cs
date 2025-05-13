@@ -11,7 +11,7 @@ namespace RestFlowSystem.PagesAP
 {
     public partial class PageAP_Orders : Page
     {
-        private Entities _context = Entities.GetContext();
+        private Entities db = Entities.GetContext();
         private DispatcherTimer _searchTimer;
         private ObservableCollection<dynamic> _orders;
         private CollectionViewSource _orderViewSource;
@@ -42,7 +42,7 @@ namespace RestFlowSystem.PagesAP
         {
             if (Visibility == Visibility.Visible)
             {
-                _context.ChangeTracker.Entries().ToList().ForEach(x => x.Reload());
+                db.ChangeTracker.Entries().ToList().ForEach(x => x.Reload());
                 LoadStatusesAndPaymentMethods();
                 LoadOrders();
             }
@@ -52,19 +52,17 @@ namespace RestFlowSystem.PagesAP
         {
             try
             {
-                // Загрузка статусов
                 FilterStatus.Items.Clear();
                 FilterStatus.Items.Add(new ComboBoxItem { Content = "Все" });
-                foreach (var status in _context.OrderStatuses.ToList())
+                foreach (var status in db.OrderStatuses.ToList())
                 {
                     FilterStatus.Items.Add(new ComboBoxItem { Content = status.StatusName, Tag = status.StatusID });
                 }
                 FilterStatus.SelectedIndex = 0;
 
-                // Загрузка типов оплаты
                 FilterPaymentMethod.Items.Clear();
                 FilterPaymentMethod.Items.Add(new ComboBoxItem { Content = "Все" });
-                foreach (var paymentMethod in _context.PaymentMethods.ToList())
+                foreach (var paymentMethod in db.PaymentMethods.ToList())
                 {
                     FilterPaymentMethod.Items.Add(new ComboBoxItem { Content = paymentMethod.MethodName, Tag = paymentMethod.PaymentMethodID });
                 }
@@ -81,7 +79,7 @@ namespace RestFlowSystem.PagesAP
             try
             {
                 _orders.Clear();
-                var orders = _context.Orders
+                var orders = db.Orders
                     .Include(o => o.Employees)
                     .Include(o => o.OrderStatuses)
                     .Include(o => o.PaymentMethods)
@@ -121,7 +119,6 @@ namespace RestFlowSystem.PagesAP
                     var order = item as dynamic;
                     if (order == null) return false;
 
-                    // Поиск по всем полям
                     string searchText = SearchOrder.Text?.ToLower() ?? "";
                     bool searchMatch = string.IsNullOrWhiteSpace(searchText) ||
                                        (order.OrderID.ToString().Contains(searchText)) ||
@@ -132,13 +129,11 @@ namespace RestFlowSystem.PagesAP
                                        (order.PaymentMethodName?.ToLower().Contains(searchText) ?? false) ||
                                        (order.TotalAmount.ToString("F2").Contains(searchText));
 
-                    // Фильтрация по статусу
                     var selectedStatus = FilterStatus.SelectedItem as ComboBoxItem;
                     bool statusMatch = selectedStatus == null ||
                                        selectedStatus.Content.ToString() == "Все" ||
                                        (selectedStatus.Tag != null && order.StatusID == (int)selectedStatus.Tag);
 
-                    // Фильтрация по типу оплаты
                     var selectedPaymentMethod = FilterPaymentMethod.SelectedItem as ComboBoxItem;
                     bool paymentMethodMatch = selectedPaymentMethod == null ||
                                               selectedPaymentMethod.Content.ToString() == "Все" ||
@@ -205,7 +200,7 @@ namespace RestFlowSystem.PagesAP
                 .Select(item => (int)item.GetType().GetProperty("OrderID").GetValue(item))
                 .ToList();
 
-            var ordersToRemove = _context.Orders
+            var ordersToRemove = db.Orders
                 .Where(o => ordersForRemoving.Contains(o.OrderID))
                 .ToList();
 
@@ -222,7 +217,7 @@ namespace RestFlowSystem.PagesAP
                 {
                     foreach (var order in ordersToRemove)
                     {
-                        var orderItems = _context.OrderItems
+                        var orderItems = db.OrderItems
                             .Where(oi => oi.OrderID == order.OrderID)
                             .Include(oi => oi.Menu.DishIngredients)
                             .ToList();
@@ -231,7 +226,7 @@ namespace RestFlowSystem.PagesAP
                         {
                             foreach (var dishIngredient in item.Menu.DishIngredients)
                             {
-                                var inventory = _context.Inventory
+                                var inventory = db.Inventory
                                     .FirstOrDefault(i => i.IngredientID == dishIngredient.IngredientID);
                                 if (inventory != null)
                                 {
@@ -241,8 +236,8 @@ namespace RestFlowSystem.PagesAP
                         }
                     }
 
-                    _context.Orders.RemoveRange(ordersToRemove);
-                    _context.SaveChanges();
+                    db.Orders.RemoveRange(ordersToRemove);
+                    db.SaveChanges();
                     MessageBox.Show("Заказы успешно удалены!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                     LoadOrders();
                 }
@@ -258,7 +253,7 @@ namespace RestFlowSystem.PagesAP
             try
             {
                 var orderId = (int)(sender as Button).Tag;
-                var order = _context.Orders.FirstOrDefault(o => o.OrderID == orderId);
+                var order = db.Orders.FirstOrDefault(o => o.OrderID == orderId);
                 NavigationService.Navigate(new AddEditOrder(order));
             }
             catch (Exception ex)
