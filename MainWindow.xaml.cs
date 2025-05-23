@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -7,16 +7,30 @@ using System.Windows.Controls;
 
 namespace RestFlowSystem
 {
+    /// <summary>
+    /// Главное окно приложения, содержащее логику авторизации пользователей.
+    /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// Флаг успешного входа.
+        /// </summary>
         private bool _isSuccessfulLogin = false;
 
+        /// <summary>
+        /// Инициализирует главное окно и подписывает обработчик на событие закрытия окна.
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
             this.Closing += Window_Closing;
         }
 
+        /// <summary>
+        /// Вычисляет SHA1-хеш от строки пароля.
+        /// </summary>
+        /// <param name="password">Пароль, который нужно захешировать.</param>
+        /// <returns>Строка-хеш пароля.</returns>
         public static string GetHash(string password)
         {
             using (var hash = SHA1.Create())
@@ -25,6 +39,13 @@ namespace RestFlowSystem
             }
         }
 
+        /// <summary>
+        /// Обрабатывает клик по кнопке входа, выполняет проверку введённых данных и авторизацию пользователя.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Аргументы события.</param>
+        /// <exception cref="Exception">Происходит в случае ошибки работы с базой данных.</exception>
+        /// <remarks>В случае успешного входа открывается соответствующая панель в зависимости от роли пользователя.</remarks>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             bool isValid = true;
@@ -107,6 +128,7 @@ namespace RestFlowSystem
                     }
                 }
             }
+            
             catch (Exception ex)
             {
                 MessageBox.Show($"Ошибка при входе: {ex.Message}",
@@ -116,12 +138,20 @@ namespace RestFlowSystem
             }
         }
 
+        /// <summary>
+        /// Очищает текст ошибок, связанных с вводом логина и пароля.
+        /// </summary>
         private void ClearErrors()
         {
             LoginErrorText.Text = "";
             PasswordErrorText.Text = "";
         }
 
+        /// <summary>
+        /// Обрабатывает событие закрытия окна. Подтверждает закрытие, если пользователь не вошел.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Аргументы события.</param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (_isSuccessfulLogin)
@@ -140,6 +170,11 @@ namespace RestFlowSystem
             }
         }
 
+        /// <summary>
+        /// Показывает пароль в виде открытого текста.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Аргументы события.</param>
         private void ShowPasswordCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             PasswordTextBox.Text = PasswordBox.Password;
@@ -147,6 +182,11 @@ namespace RestFlowSystem
             PasswordTextBox.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// Скрывает пароль, показывая его как точки.
+        /// </summary>
+        /// <param name="sender">Источник события.</param>
+        /// <param name="e">Аргументы события.</param>
         private void ShowPasswordCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             PasswordBox.Password = PasswordTextBox.Text;
