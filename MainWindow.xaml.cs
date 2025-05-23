@@ -8,17 +8,17 @@ using System.Windows.Controls;
 namespace RestFlowSystem
 {
     /// <summary>
-    /// Главное окно приложения, содержащее логику авторизации пользователей.
+    /// Главное окно приложения, содержащее логику авторизации пользователей
     /// </summary>
     public partial class MainWindow : Window
     {
         /// <summary>
-        /// Флаг успешного входа.
+        /// Флаг успешного входа
         /// </summary>
         private bool _isSuccessfulLogin = false;
 
         /// <summary>
-        /// Инициализирует главное окно и подписывает обработчик на событие закрытия окна.
+        /// Инициализирует главное окно и подписывает обработчик на событие закрытия окна
         /// </summary>
         public MainWindow()
         {
@@ -27,10 +27,10 @@ namespace RestFlowSystem
         }
 
         /// <summary>
-        /// Вычисляет SHA1-хеш от строки пароля.
+        /// Вычисляет SHA1-хеш от строки пароля
         /// </summary>
-        /// <param name="password">Пароль, который нужно захешировать.</param>
-        /// <returns>Строка-хеш пароля.</returns>
+        /// <param name="password">Пароль, который нужно захешировать</param>
+        /// <returns>Строка-хеш пароля</returns>
         public static string GetHash(string password)
         {
             using (var hash = SHA1.Create())
@@ -40,12 +40,12 @@ namespace RestFlowSystem
         }
 
         /// <summary>
-        /// Обрабатывает клик по кнопке входа, выполняет проверку введённых данных и авторизацию пользователя.
+        /// Обрабатывает клик по кнопке входа, выполняет проверку введённых данных и авторизацию пользователя
         /// </summary>
-        /// <param name="sender">Источник события.</param>
-        /// <param name="e">Аргументы события.</param>
-        /// <exception cref="Exception">Происходит в случае ошибки работы с базой данных.</exception>
-        /// <remarks>В случае успешного входа открывается соответствующая панель в зависимости от роли пользователя.</remarks>
+        /// <param name="sender">Источник события</param>
+        /// <param name="e">Аргументы события</param>
+        /// <exception cref="Exception">Происходит в случае ошибки работы с базой данных</exception>
+        /// <remarks>В случае успешного входа открывается соответствующая панель в зависимости от роли пользователя</remarks>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             bool isValid = true;
@@ -139,7 +139,7 @@ namespace RestFlowSystem
         }
 
         /// <summary>
-        /// Очищает текст ошибок, связанных с вводом логина и пароля.
+        /// Очищает текст ошибок, связанных с вводом логина и пароля
         /// </summary>
         private void ClearErrors()
         {
@@ -148,10 +148,10 @@ namespace RestFlowSystem
         }
 
         /// <summary>
-        /// Обрабатывает событие закрытия окна. Подтверждает закрытие, если пользователь не вошел.
+        /// Обрабатывает событие закрытия окна. Подтверждает закрытие, если пользователь не вошел
         /// </summary>
-        /// <param name="sender">Источник события.</param>
-        /// <param name="e">Аргументы события.</param>
+        /// <param name="sender">Источник события</param>
+        /// <param name="e">Аргументы события</param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (_isSuccessfulLogin)
@@ -171,10 +171,10 @@ namespace RestFlowSystem
         }
 
         /// <summary>
-        /// Показывает пароль в виде открытого текста.
+        /// Показывает пароль в виде открытого текста
         /// </summary>
-        /// <param name="sender">Источник события.</param>
-        /// <param name="e">Аргументы события.</param>
+        /// <param name="sender">Источник события</param>
+        /// <param name="e">Аргументы события</param>
         private void ShowPasswordCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             PasswordTextBox.Text = PasswordBox.Password;
@@ -183,10 +183,10 @@ namespace RestFlowSystem
         }
 
         /// <summary>
-        /// Скрывает пароль, показывая его как точки.
+        /// Скрывает пароль, показывая его как точки
         /// </summary>
-        /// <param name="sender">Источник события.</param>
-        /// <param name="e">Аргументы события.</param>
+        /// <param name="sender">Источник события</param>
+        /// <param name="e">Аргументы события</param>
         private void ShowPasswordCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             PasswordBox.Password = PasswordTextBox.Text;
